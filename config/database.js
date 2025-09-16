@@ -37,6 +37,11 @@ CREATE TABLE IF NOT EXISTS ingredients (
 );
 `;
 
+// Ajout de la colonne price si elle n'existe pas déjà
+const alterIngredientsSql = `
+ALTER TABLE ingredients ADD COLUMN price REAL DEFAULT 1;
+`;
+
 db.serialize(() => {
     db.run(initSql, (err) => {
         if (err) {
@@ -49,6 +54,22 @@ db.serialize(() => {
             console.error('Failed to initialize ingredients table', err);
             process.exit(1);
         }
+        db.run(alterIngredientsSql, (err) => {
+            // Ensuite, on vérifie si la table est vide
+            db.get('SELECT COUNT(*) as count FROM ingredients', (err, row) => {
+                if (err) return;
+                if (row.count === 0) {
+                    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                    db.run(insertSql, (err) => {
+                        if (err) {
+                            console.error('Failed to insert default ingredients', err);
+                        } else {
+                            console.log('Default ingredients inserted');
+                        }
+                    });
+                }
+            });
+        });
     });
 });
 
