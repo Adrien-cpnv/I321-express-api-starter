@@ -1,0 +1,12 @@
+// routes/router.js
+const express = require('express');
+const pizzasRouter = require('../pizzas/pizzasRouter');
+const ingredientsRouter = require('../ingredients/ingredientsRouter');
+
+const router = express.Router();
+
+// monter les sous-routeurs sur /pizzas et /ingredients
+router.use('/pizzas', pizzasRouter);
+router.use('/ingredients', ingredientsRouter);
+
+module.exports = router;

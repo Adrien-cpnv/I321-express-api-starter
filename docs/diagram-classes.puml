@@ -1,0 +1,53 @@
+@startuml ClassesPizzaIngredients
+title Diagramme de classes - Pizzas & Ingrédients
+
+class Pizza {
+  +id: int
+  +name: string
+  +description: string
+  +imageUrl: string
+  +price: number
+  +created_at: string
+  +updated_at: string
+}
+
+class Ingredient {
+  +id: int
+  +name: string
+  +description: string
+  +created_at: string
+  +updated_at: string
+}
+
+class PizzaIngredient {
+  +pizza_id: int
+  +ingredient_id: int
+}
+
+class PizzaController {
+  +getAll()
+  +getById(id)
+  +create(body)
+  +update(id, body)
+  +remove(id)
+}
+
+class IngredientController {
+  +getAll()
+  +getById(id)
+  +create(body)
+  +update(id, body)
+  +remove(id)
+  +existsAll(ids): boolean
+}
+
+' Relations métier
+Pizza "1" -- "0..*" PizzaIngredient : pk id -> pizza_id
+Ingredient "1" -- "0..*" PizzaIngredient : pk id -> ingredient_id
+Pizza "0..*" -- "0..*" Ingredient : via PizzaIngredient
+
+' Dialogue entre ressources
+PizzaController ..> IngredientController : vérifie l'existence des ingrédients\n(pas d'accès direct à l'entité)
+
+@enduml
+

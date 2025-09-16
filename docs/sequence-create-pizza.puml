@@ -1,0 +1,38 @@
+@startuml SequenceCreatePizza
+actor Client
+participant "PizzaController" as PC
+participant "IngredientController" as IC
+participant "Pizza (Model)" as PM
+participant "PizzaIngredient (Model)" as PIM
+
+Client -> PC: POST /api/pizzas {name, price, ingredients[]}
+PC -> PC: Vérifier paramètres (name, price, ingredients)
+alt Paramètre manquant ou type incorrect
+    PC -> Client: 400 Bad Request (erreur de validation)
+    return
+end
+PC -> PM: findByName(name)
+alt Pizza existe déjà
+    PM --> PC: Pizza trouvée
+    PC -> Client: 400 Bad Request (nom déjà utilisé)
+    return
+else Pizza n'existe pas
+    PM --> PC: null
+end
+PC -> IC: existsAll(ingredients[])
+alt Un ou plusieurs ingrédients inexistants
+    IC --> PC: false
+    PC -> Client: 400 Bad Request (ingrédient inexistant)
+    return
+else Tous les ingrédients existent
+    IC --> PC: true
+end
+PC -> PM: create({name, price, ...})
+PM --> PC: pizza créée (pizzaId)
+loop Pour chaque ingrédient
+    PC -> PIM: create({pizzaId, ingredientId})
+    PIM --> PC: association créée
+end
+PC -> Client: 201 Created (pizza + ingrédients)
+@enduml
+

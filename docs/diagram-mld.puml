@@ -1,0 +1,45 @@
+@startuml MLDPizzaIngredients
+title Modèle logique de données - Pizzas & Ingrédients
+
+hide circle
+skinparam linetype ortho
+
+entity "pizzas" as P <<table>> {
+  * id : INTEGER <<PK>>
+  --
+  name : TEXT <<UNIQUE>>
+  description : TEXT
+  imageUrl : TEXT
+  price : REAL
+  created_at : TEXT
+  updated_at : TEXT
+}
+
+entity "ingredients" as I <<table>> {
+  * id : INTEGER <<PK>>
+  --
+  name : TEXT
+  description : TEXT
+  created_at : TEXT
+  updated_at : TEXT
+}
+
+entity "pizza_ingredients" as PI <<table>> {
+  * pizza_id : INTEGER <<FK P.id>>
+  * ingredient_id : INTEGER <<FK I.id>>
+}
+
+P ||--o{ PI : FK (pizza_id) -> P.id
+I ||--o{ PI : FK (ingredient_id) -> I.id
+
+note right of P
+- name est UNIQUE
+- price NOT NULL
+end note
+
+note right of PI
+Clé primaire composite (pizza_id, ingredient_id)
+end note
+
+@enduml
+

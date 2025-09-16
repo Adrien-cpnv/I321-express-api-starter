@@ -1,85 +1,54 @@
-# Products API
+# API Pizzas & Ingrédients — Starter Express
 
-A simple RESTful API to manage products (CRUD) built with **Express**, **SQLite3**, **express-validator**, and documented with **Swagger UI**.
+## Présentation
+Ce projet propose une API RESTful pour gérer des pizzas et leurs ingrédients, réalisée avec Node.js, Express et SQLite. Il est conçu pour être pédagogique et facilement compréhensible par des étudiants.
+
+## Structure du projet
+
+- `app.js` / `server.js` : point d’entrée de l’application
+- `ingredients/` : gestion des ingrédients (contrôleur, routes)
+- `pizzas/` : gestion des pizzas (contrôleur, routes, modèle)
+- `config/` : configuration de la base de données et Swagger
+- `routes/` : routeur principal (agrège les sous-routeurs)
+
+## Lancement du projet
+
+1. Installer les dépendances :
+   ```bash
+   npm install
+   ```
+2. Lancer le serveur :
+   ```bash
+   npm start
+   ```
+3. L’API sera accessible sur `http://localhost:3000` (ou le port défini dans `server.js`).
+
+## Documentation interactive
+
+Une documentation Swagger est disponible (voir config/swagger.js) pour tester l’API et comprendre chaque endpoint.
+
+## Exemples d’utilisation
+
+### Récupérer tous les ingrédients
+```bash
+curl http://localhost:3000/api/ingredients
+```
+
+### Créer une pizza
+```bash
+curl -X POST http://localhost:3000/api/pizzas -H "Content-Type: application/json" -d '{"name":"Reine","price":12.5}'
+```
+
+## Bonnes pratiques pédagogiques
+- Chaque fichier de contrôleur et de route est abondamment commenté pour expliquer le rôle de chaque fonction.
+- La documentation Swagger permet de visualiser et tester l’API facilement.
+- Les conventions de nommage sont respectées et les erreurs sont gérées proprement.
+
+## Pour aller plus loin
+- Ajouter des tests automatisés
+- Sécuriser l’API (authentification, validation avancée)
+- Déployer sur un service cloud
 
 ---
-
-## Requirements
-
-- **Node.js**: v18.x or higher
-- **npm**: v9.x or higher
-
-*(older versions may work but are not tested)*
-
----
-
-## Project structure
-
-```bash
-│   .env
-│   .gitignore
-│   dev.sqlite
-│   package-lock.json
-│   package.json
-│   README.md
-│
-├───docs
-│       class_diagram.puml
-│
-└───src
-    │   app.js
-    │   server.js
-    │
-    ├───config
-    │       database.js
-    │       swagger.js
-    │
-    ├───controllers
-    │       pizzaController.js
-    │
-    ├───entities
-    │       Pizza.js
-    │
-    └───routes
-            pizzas.js
-            router.js
-```
-
-## Installation
-
-Clone the repository, then install dependencies:
-
-```bash
-npm install
-```
-
-## Development
-
-Start the server in dev mode (with auto-reload via nodemon):
-
-```bash
-npm run dev
-```
-
-Start the server normally:
-
-```bash
-npm start
-```
-
-## Usage
-
-API base URL: http://localhost:3000/api
-
-Swagger UI docs: http://localhost:3000/docs
-
-## Environment
-
-The .env file defines:
-
-```bash
-PORT=3000
-DB_FILE=./dev.sqlite
-NODE_ENV=development
-```
+Projet prêt à l’emploi pour l’apprentissage d’Express et des API REST !
 
