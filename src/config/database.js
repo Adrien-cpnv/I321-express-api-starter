@@ -37,6 +37,18 @@ updated_at TEXT DEFAULT (datetime('now'))
         );
 `;
 
+const pizzaIngredientsTableSql = `
+    CREATE TABLE IF NOT EXISTS pizza_ingredients (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        pizza_id INTEGER NOT NULL,
+        ingredient_id INTEGER NOT NULL,
+        created_at TEXT DEFAULT (datetime('now')),
+        FOREIGN KEY (pizza_id) REFERENCES pizzas (id) ON DELETE CASCADE,
+        FOREIGN KEY (ingredient_id) REFERENCES ingredients (id) ON DELETE CASCADE,
+        UNIQUE(pizza_id, ingredient_id)
+    );
+`;
+
 db.serialize(() => {
     db.run(pizzasTableSql, (err) => {
         if (err) {
@@ -48,6 +60,14 @@ db.serialize(() => {
     db.run(ingredientsTableSql, (err) => {
         if (err) {
             console.error('Failed to create ingredients table', err);
+            process.exit(1);
+        }
+    });
+
+    // Ajouter la création de la table pizza_ingredients
+    db.run(pizzaIngredientsTableSql, (err) => {
+        if (err) {
+            console.error('Failed to create pizza_ingredients table', err);
             process.exit(1);
         }
     });
