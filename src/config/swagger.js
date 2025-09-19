@@ -5,20 +5,15 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Pizzas & Ingredients API',
+            title: 'Products API',
             version: '1.0.0',
-            description: 'RESTful API for pizza and ingredient management (SQLite, Express).'
+            description: 'RESTful API for product management (SQLite, Express).'
         },
         servers: [
             { url: 'http://localhost:3000', description: 'Local dev server' }
         ]
     },
-    apis: [
-      './routes/*.js',
-      './ingredients/*.js',
-      './pizzas/*.js',
-      './app.js'
-    ]
+    apis: ['./src/**/*.js'] // pick up JSDoc in routes/controllers
 };
 
 const swaggerSpec = swaggerJSDoc(options);

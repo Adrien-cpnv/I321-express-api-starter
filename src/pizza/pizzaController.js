@@ -1,50 +1,40 @@
-// Contrôleur pour la gestion des pizzas
-// Chaque fonction correspond à une opération CRUD sur la table 'pizzas'.
+// controllers/pizzaController.js
 const { validationResult } = require('express-validator');
 const Pizza = require('./Pizza');
 
 /**
- * Crée une nouvelle pizza.
- * POST /api/pizzas
- * Les champs 'name' et 'price' sont obligatoires.
+ * Controller functions use Express (req, res) signatures and
+ * respond with status codes matching MDN/HTTP recommendations.
  */
+
 exports.create = async (req, res, next) => {
     try {
-        // Vérifie les erreurs de validation envoyées par express-validator
+        // validation result
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            // 400 Bad Request pour les problèmes de validation
+            // 400 Bad Request for validation problems
             return res.status(400).json({ errors: errors.array() });
         }
 
         const { name, description, imageUrl, price } = req.body;
-        // Création de la pizza en base de données
         const created = await Pizza.create({ name, description, imageUrl, price });
-        // 201 Created : retourne la pizza créée
+        // 201 Created
         return res.status(201).json(created);
     } catch (err) {
         next(err);
     }
 };
 
-/**
- * Récupère la liste de toutes les pizzas.
- * GET /api/pizzas
- */
 exports.findAll = async (req, res, next) => {
     try {
         const pizzas = await Pizza.findAll();
-        // 200 OK : retourne la liste des pizzas
+        // 200 OK
         return res.status(200).json(pizzas);
     } catch (err) {
         next(err);
     }
 };
 
-/**
- * Récupère une pizza par son identifiant.
- * GET /api/pizzas/:id
- */
 exports.findOne = async (req, res, next) => {
     try {
         const id = Number(req.params.id);
@@ -59,14 +49,9 @@ exports.findOne = async (req, res, next) => {
     }
 };
 
-/**
- * Met à jour une pizza existante.
- * PUT /api/pizzas/:id
- * Les champs 'name' et 'price' sont obligatoires.
- */
 exports.update = async (req, res, next) => {
     try {
-        // Vérifie les erreurs de validation envoyées par express-validator
+        // validation result
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
@@ -76,7 +61,6 @@ exports.update = async (req, res, next) => {
         if (Number.isNaN(id)) return res.status(400).json({ error: 'Invalid pizza id' });
 
         const { name, description, imageUrl, price } = req.body;
-        // Met à jour la pizza en base de données
         const updated = await Pizza.update(id, { name, description, imageUrl, price });
         if (!updated) return res.status(404).json({ error: 'Pizza not found' }); // 404 Not Found
 
@@ -86,10 +70,6 @@ exports.update = async (req, res, next) => {
     }
 };
 
-/**
- * Supprime une pizza par son identifiant.
- * DELETE /api/pizzas/:id
- */
 exports.delete = async (req, res, next) => {
     try {
         const id = Number(req.params.id);

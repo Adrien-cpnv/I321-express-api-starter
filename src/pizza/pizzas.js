@@ -1,15 +1,10 @@
-// Routeur Express pour la gestion des pizzas
-// Chaque route correspond à une opération CRUD sur la ressource 'pizza'.
+// routes/pizzas.js
 const express = require('express');
 const { body, param } = require('express-validator');
 const pizzaController = require('./pizzaController');
 
 const router = express.Router();
 
-/**
- * Documentation Swagger (OpenAPI) pour chaque endpoint.
- * Permet de générer automatiquement une documentation interactive de l'API.
- */
 
 /**
  * @openapi
@@ -110,6 +105,7 @@ const router = express.Router();
 /**
  * Validation rules
  */
+
 const createAndUpdateValidations = [
     body('name').isString().notEmpty().withMessage('name is required'),
     body('description').optional().isString(),
